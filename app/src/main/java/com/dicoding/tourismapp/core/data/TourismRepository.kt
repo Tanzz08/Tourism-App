@@ -11,6 +11,9 @@ import com.dicoding.tourismapp.core.domain.model.Tourism
 import com.dicoding.tourismapp.core.domain.repository.ITourismRepository
 import com.dicoding.tourismapp.core.utils.AppExecutors
 import com.dicoding.tourismapp.core.utils.DataMapper
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 class TourismRepository private constructor(
     private val remoteDataSource: RemoteDataSource,
@@ -34,27 +37,30 @@ class TourismRepository private constructor(
 
     // mengubah tipe data pada TourismRepository yang sebelumnya menggunakan TourismEntity menjadi Tourism
 
-    override fun getAllTourism(): LiveData<Resource<List<Tourism>>> =
-        object : NetworkBoundResource<List<Tourism>, List<PlacesItem>>(appExecutors) {
-            override fun loadFromDB(): LiveData<List<Tourism>> {
-                return localDataSource.getAllTourism().map {
-                    DataMapper.mapEntitiesToDomain(it)
-                }
+    // selanjutnya sesuaikan disini menjadi Flowable
+    override fun getAllTourism(): Flowable<Resource<List<Tourism>>> =
+        object : NetworkBoundResource<List<Tourism>, List<PlacesItem>>() {
+            override fun loadFromDB(): Flowable<List<Tourism>> {
+                return localDataSource.getAllTourism().map { DataMapper.mapEntitiesToDomain(it) }
             }
 
-            override fun shouldFetch(data: List<Tourism>?): Boolean = true // ubah jadi true jika ingin selalu mengambil data dari internet
-//                data.isNullOrEmpty()
+            override fun shouldFetch(data: List<Tourism>?): Boolean =
+                data.isNullOrEmpty() // mengambil data dari internet hanya jika data di database kosong
+//                 true // ganti dengan true jika ingin selalu mengambil data dari internet
 
-            override fun createCall(): LiveData<ApiResponse<List<PlacesItem>>> =
+            override fun createCall(): Flowable<ApiResponse<List<PlacesItem>>> =
                 remoteDataSource.getAllTourism()
 
             override fun saveCallResult(data: List<PlacesItem>) {
                 val tourismList = DataMapper.mapResponsesToEntities(data)
                 localDataSource.insertTourism(tourismList)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe()
             }
-        }.asLiveData()
+        }.asFlowable()
 
-    override fun getFavoriteTourism(): LiveData<List<Tourism>> {
+    override fun getFavoriteTourism(): Flowable<List<Tourism>> {
         return localDataSource.getFavoriteTourism().map {
             DataMapper.mapEntitiesToDomain(it)
         }

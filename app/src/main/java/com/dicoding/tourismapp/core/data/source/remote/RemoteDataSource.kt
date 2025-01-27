@@ -1,5 +1,6 @@
 package com.dicoding.tourismapp.core.data.source.remote
 
+import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -10,6 +11,11 @@ import com.dicoding.tourismapp.core.data.source.remote.network.ApiService
 import com.dicoding.tourismapp.core.data.source.remote.response.PlacesItem
 import com.dicoding.tourismapp.core.data.source.remote.response.TourismResponse
 import com.dicoding.tourismapp.core.utils.JsonHelper
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.BackpressureStrategy
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.subjects.PublishSubject
 import org.json.JSONException
 import retrofit2.Call
 import retrofit2.Callback
@@ -26,8 +32,10 @@ class RemoteDataSource private constructor(private val apiService: ApiService) {
             }
     }
 
-    fun getAllTourism(): LiveData<ApiResponse<List<PlacesItem>>> {
-        val resultData = MutableLiveData<ApiResponse<List<PlacesItem>>>()
+    // mengubah LiveData menjadi Flowable
+    @SuppressLint("CheckResult")
+    fun getAllTourism(): Flowable<ApiResponse<List<PlacesItem>>> {
+        val resultData = PublishSubject.create<ApiResponse<List<PlacesItem>>>()
 
 //        //get data from local json
 //        val handler = Handler(Looper.getMainLooper())
@@ -47,24 +55,37 @@ class RemoteDataSource private constructor(private val apiService: ApiService) {
 
         // get data from remote api
         val client = apiService.getList()
-        client.enqueue(object : Callback<TourismResponse> {
-            override fun onResponse(
-                call: Call<TourismResponse>,
-                response: Response<TourismResponse>
-            ) {
-                val dataArray = response.body()?.places
-                resultData.value =
-                    if (dataArray != null) ApiResponse.Success(dataArray) else ApiResponse.Empty
-            }
+//        client.enqueue(object : Callback<TourismResponse> {
+//            override fun onResponse(
+//                call: Call<TourismResponse>,
+//                response: Response<TourismResponse>
+//            ) {
+//                val dataArray = response.body()?.places
+//                resultData.value =
+//                    if (dataArray != null) ApiResponse.Success(dataArray) else ApiResponse.Empty
+//            }
+//
+//            override fun onFailure(call: Call<TourismResponse>, t: Throwable) {
+//                resultData.value = ApiResponse.Error(t.message.toString())
+//                Log.e("RemoteDataSource", t.message.toString())
+//            }
+//
+//        })
 
-            override fun onFailure(call: Call<TourismResponse>, t: Throwable) {
-                resultData.value = ApiResponse.Error(t.message.toString())
-                Log.e("RemoteDataSource", t.message.toString())
-            }
+        // implementasi menggunakan RxJava3
+        client
+            .subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .take(1)
+            .subscribe({ response ->
+                val dataArray = response.places
+                resultData.onNext(if (dataArray.isNotEmpty()) ApiResponse.Success(dataArray) else ApiResponse.Empty)
+            }, { error ->
+                resultData.onNext(ApiResponse.Error(error.message.toString()))
+                Log.e("RemoteDataSource", error.toString())
+            })
 
-        })
-
-        return resultData
+        return resultData.toFlowable(BackpressureStrategy.BUFFER)
     }
 }
 
