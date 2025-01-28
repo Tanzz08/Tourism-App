@@ -5,18 +5,19 @@ import androidx.room.*
 import com.dicoding.tourismapp.core.data.source.local.entity.TourismEntity
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TourismDao {
 
     @Query("SELECT * FROM tourism")
-    fun getAllTourism(): Flowable<List<TourismEntity>>
+    fun getAllTourism(): Flow<List<TourismEntity>>
 
     @Query("SELECT * FROM tourism where isFavorite = 1")
-    fun getFavoriteTourism(): Flowable<List<TourismEntity>>
+    fun getFavoriteTourism(): Flow<List<TourismEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertTourism(tourism: List<TourismEntity>): Completable
+    suspend fun insertTourism(tourism: List<TourismEntity>) // menggunakan suspend supaya bisa dilakukan secara asynchronous
 
     @Update
     fun updateFavoriteTourism(tourism: TourismEntity)

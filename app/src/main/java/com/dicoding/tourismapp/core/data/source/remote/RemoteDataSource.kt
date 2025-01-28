@@ -16,6 +16,10 @@ import io.reactivex.rxjava3.core.BackpressureStrategy
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import org.json.JSONException
 import retrofit2.Call
 import retrofit2.Callback
@@ -34,58 +38,22 @@ class RemoteDataSource private constructor(private val apiService: ApiService) {
 
     // mengubah LiveData menjadi Flowable
     @SuppressLint("CheckResult")
-    fun getAllTourism(): Flowable<ApiResponse<List<PlacesItem>>> {
-        val resultData = PublishSubject.create<ApiResponse<List<PlacesItem>>>()
-
-//        //get data from local json
-//        val handler = Handler(Looper.getMainLooper())
-//        handler.postDelayed({
-//            try {
-//                val dataArray = jsonHelper.loadData()
-//                if (dataArray.isNotEmpty()) {
-//                    resultData.value = ApiResponse.Success(dataArray)
-//                } else {
-//                    resultData.value = ApiResponse.Empty
-//                }
-//            } catch (e: JSONException){
-//                resultData.value = ApiResponse.Error(e.toString())
-//                Log.e("RemoteDataSource", e.toString())
-//            }
-//        }, 2000)
-
-        // get data from remote api
-        val client = apiService.getList()
-//        client.enqueue(object : Callback<TourismResponse> {
-//            override fun onResponse(
-//                call: Call<TourismResponse>,
-//                response: Response<TourismResponse>
-//            ) {
-//                val dataArray = response.body()?.places
-//                resultData.value =
-//                    if (dataArray != null) ApiResponse.Success(dataArray) else ApiResponse.Empty
-//            }
-//
-//            override fun onFailure(call: Call<TourismResponse>, t: Throwable) {
-//                resultData.value = ApiResponse.Error(t.message.toString())
-//                Log.e("RemoteDataSource", t.message.toString())
-//            }
-//
-//        })
-
-        // implementasi menggunakan RxJava3
-        client
-            .subscribeOn(Schedulers.computation())
-            .observeOn(AndroidSchedulers.mainThread())
-            .take(1)
-            .subscribe({ response ->
+    suspend fun getAllTourism(): Flow<ApiResponse<List<PlacesItem>>>  {
+        return flow {
+            try {
+                val response = apiService.getList()
                 val dataArray = response.places
-                resultData.onNext(if (dataArray.isNotEmpty()) ApiResponse.Success(dataArray) else ApiResponse.Empty)
-            }, { error ->
-                resultData.onNext(ApiResponse.Error(error.message.toString()))
-                Log.e("RemoteDataSource", error.toString())
-            })
+                if (dataArray.isNotEmpty()){
+                    emit(ApiResponse.Success(response.places))
+                } else {
+                    emit(ApiResponse.Empty)
+                }
+            } catch (e : Exception) {
+                emit(ApiResponse.Error(e.toString()))
+                Log.e("RemoteDataSource", e.toString())
+            }
+        }.flowOn(Dispatchers.IO)
 
-        return resultData.toFlowable(BackpressureStrategy.BUFFER)
     }
 }
 
