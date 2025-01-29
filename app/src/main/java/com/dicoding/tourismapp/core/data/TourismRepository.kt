@@ -17,7 +17,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class TourismRepository private constructor(
+class TourismRepository(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
     private val appExecutors: AppExecutors
@@ -27,14 +27,15 @@ class TourismRepository private constructor(
         @Volatile
         private var instance: TourismRepository? = null
 
-        fun getInstance(
-            remoteData: RemoteDataSource,
-            localData: LocalDataSource,
-            appExecutors: AppExecutors
-        ): TourismRepository =
-            instance ?: synchronized(this) {
-                instance ?: TourismRepository(remoteData, localData, appExecutors)
-            }
+        // dihapus karena sudah menggunakan koin
+//        fun getInstance(
+//            remoteData: RemoteDataSource,
+//            localData: LocalDataSource,
+//            appExecutors: AppExecutors
+//        ): TourismRepository =
+//            instance ?: synchronized(this) {
+//                instance ?: TourismRepository(remoteData, localData, appExecutors)
+//            }
     }
 
     // mengubah tipe data pada TourismRepository yang sebelumnya menggunakan TourismEntity menjadi Tourism

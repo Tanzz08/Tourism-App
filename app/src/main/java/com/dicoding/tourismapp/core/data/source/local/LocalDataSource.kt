@@ -6,15 +6,16 @@ import com.dicoding.tourismapp.core.data.source.local.room.TourismDao
 import io.reactivex.rxjava3.core.Flowable
 import kotlinx.coroutines.flow.Flow
 
-class LocalDataSource private constructor(private val tourismDao: TourismDao) {
+class LocalDataSource(private val tourismDao: TourismDao) {
 
     companion object {
         private var instance: LocalDataSource? = null
 
-        fun getInstance(tourismDao: TourismDao): LocalDataSource =
-            instance ?: synchronized(this) {
-                instance ?: LocalDataSource(tourismDao)
-            }
+        // dihapus karena sudah menggunakan koin
+//        fun getInstance(tourismDao: TourismDao): LocalDataSource =
+//            instance ?: synchronized(this) {
+//                instance ?: LocalDataSource(tourismDao)
+//            }
     }
 
 
