@@ -11,13 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.tourismapp.R
 import com.dicoding.tourismapp.core.data.Resource
 import com.dicoding.tourismapp.core.ui.TourismAdapter
-import com.dicoding.tourismapp.core.ui.ViewModelFactory
 import com.dicoding.tourismapp.databinding.FragmentHomeBinding
 import com.dicoding.tourismapp.detail.DetailTourismActivity
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
+    private val homeViewModel: HomeViewModel by viewModel() // memanggil viewmodel dari koin
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
@@ -41,8 +41,9 @@ class HomeFragment : Fragment() {
                 startActivity(intent)
             }
 
-            val factory = ViewModelFactory.getInstance(requireActivity())
-            homeViewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
+            // dihapus karena sudah menggunakan koin
+//            val factory = ViewModelFactory.getInstance(requireActivity())
+//            homeViewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
 
             homeViewModel.tourism.observe(viewLifecycleOwner) { tourism ->
                 if (tourism != null) {
