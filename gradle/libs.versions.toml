@@ -23,8 +23,12 @@ lifecycleReactivestreamsKtx = "2.8.4"
 kotlinxCoroutines = "1.8.1"
 lifecycle = "2.8.4"
 koin = "3.5.6"
+dagger = "2.52"
+
 
 [libraries]
+dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
+dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }

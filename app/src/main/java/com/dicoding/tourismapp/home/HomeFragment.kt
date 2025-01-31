@@ -1,25 +1,41 @@
 package com.dicoding.tourismapp.home
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dicoding.tourismapp.MyApplication
 import com.dicoding.tourismapp.R
 import com.dicoding.tourismapp.core.data.Resource
 import com.dicoding.tourismapp.core.ui.TourismAdapter
+import com.dicoding.tourismapp.core.ui.VIewModelFactory
 import com.dicoding.tourismapp.databinding.FragmentHomeBinding
 import com.dicoding.tourismapp.detail.DetailTourismActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import javax.inject.Inject
 
 class HomeFragment : Fragment() {
 
-    private val homeViewModel: HomeViewModel by viewModel() // memanggil viewmodel dari koin
+    @Inject
+    lateinit var factory: VIewModelFactory
+
+    private val homeViewModel: HomeViewModel by viewModels {
+        factory
+    }
+
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity().application as MyApplication).appComponent.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +57,7 @@ class HomeFragment : Fragment() {
                 startActivity(intent)
             }
 
-            // dihapus karena sudah menggunakan koin
+            // dihapus karena sudah menggunakan injection dagger
 //            val factory = ViewModelFactory.getInstance(requireActivity())
 //            homeViewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
 

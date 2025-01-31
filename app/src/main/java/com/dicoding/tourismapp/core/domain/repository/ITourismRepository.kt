@@ -8,9 +8,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface ITourismRepository {
 
-    // karena hasil dari NetworkBoundResource berbeda, yaitu Flowable. maka perlu mengganti kode
-    // pada repository menjadi seperti ini
-
     fun getAllTourism(): Flow<Resource<List<Tourism>>>
 
     fun getFavoriteTourism(): Flow<List<Tourism>>

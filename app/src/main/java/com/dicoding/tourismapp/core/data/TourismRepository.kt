@@ -16,27 +16,15 @@ import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class TourismRepository(
+@Singleton
+class TourismRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
     private val appExecutors: AppExecutors
 ) : ITourismRepository {
-
-    companion object {
-        @Volatile
-        private var instance: TourismRepository? = null
-
-        // dihapus karena sudah menggunakan koin
-//        fun getInstance(
-//            remoteData: RemoteDataSource,
-//            localData: LocalDataSource,
-//            appExecutors: AppExecutors
-//        ): TourismRepository =
-//            instance ?: synchronized(this) {
-//                instance ?: TourismRepository(remoteData, localData, appExecutors)
-//            }
-    }
 
     // mengubah tipe data pada TourismRepository yang sebelumnya menggunakan TourismEntity menjadi Tourism
 

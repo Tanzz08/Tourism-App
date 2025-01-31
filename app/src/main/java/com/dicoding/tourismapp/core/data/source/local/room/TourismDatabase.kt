@@ -13,22 +13,23 @@ abstract class TourismDatabase : RoomDatabase() {
 
     abstract fun tourismDao(): TourismDao
 
-    companion object {
-        @Volatile
-        private var INSTANCE: TourismDatabase? = null
-
-        // dihapus karena sudah menggunakan koin
-//        fun getInstance(context: Context): TourismDatabase =
-//            INSTANCE ?: synchronized(this) {
-//            val instance = Room.databaseBuilder(
-//                context.applicationContext,
-//                TourismDatabase::class.java,
-//                "Tourism.db"
-//            )
-//                .fallbackToDestructiveMigration()
-//                .build()
-//            INSTANCE = instance
-//            instance
-//        }
-    }
+    // dihapus karena sudah menggunakan dagger
+//    companion object {
+//        @Volatile
+//        private var INSTANCE: TourismDatabase? = null
+//
+//        // dihapus karena sudah menggunakan koin
+////        fun getInstance(context: Context): TourismDatabase =
+////            INSTANCE ?: synchronized(this) {
+////            val instance = Room.databaseBuilder(
+////                context.applicationContext,
+////                TourismDatabase::class.java,
+////                "Tourism.db"
+////            )
+////                .fallbackToDestructiveMigration()
+////                .build()
+////            INSTANCE = instance
+////            instance
+////        }
+//    }
 }
