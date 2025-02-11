@@ -9,5 +9,6 @@ class FavoriteViewModel(tourismUseCase: TourismUseCase) : ViewModel() {
     // pada viewmodel convert data Flow menjadi LiveData
     val favoriteTourism = tourismUseCase.getFavoriteTourism().asLiveData()
 
+
 }
 

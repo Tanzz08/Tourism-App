@@ -66,4 +66,8 @@ dependencies {
 
     api(libs.koin.android)
 
+    // encrypt database
+    implementation(libs.android.database.sqlcipher)
+    implementation(libs.androidx.sqlite.ktx)
+
 }
