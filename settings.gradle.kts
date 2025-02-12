@@ -10,7 +10,11 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        // MapBox Maven Repository
+
     }
 }
 rootProject.name = "Tourism App"
 include(":app")
+include(":core")
+include(":maps")

@@ -1,10 +1,8 @@
 package com.dicoding.tourismapp.detail
 
 import androidx.lifecycle.ViewModel
-import com.dicoding.tourismapp.core.data.TourismRepository
-import com.dicoding.tourismapp.core.data.source.local.entity.TourismEntity
-import com.dicoding.tourismapp.core.domain.model.Tourism
-import com.dicoding.tourismapp.core.domain.usecase.TourismUseCase
+import com.example.core.domain.model.Tourism
+import com.example.core.domain.usecase.TourismUseCase
 
 class DetailTourismViewModel(private val tourismUseCase: TourismUseCase) : ViewModel() {
     // mengubah tipedata dari TourismEntity menjadi Tourism

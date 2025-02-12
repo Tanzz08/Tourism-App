@@ -1,16 +1,16 @@
 [versions]
 agp = "8.5.2"
 kotlin = "2.0.0"
-ksp = "2.0.10-1.0.24"
-coreKtx = "1.13.1"
+ksp = "2.0.20-1.0.24"
+coreKtx = "1.15.0"
 appcompat = "1.7.0"
-constraintLayout= "2.1.4"
-activityKtx = "1.9.1"
-fragmentKtx = "1.8.2"
+constraintLayout= "2.2.0"
+activityKtx = "1.10.0"
+fragmentKtx = "1.8.5"
 junit = "4.13.2"
 androidxJunit = "1.2.1"
 espresso = "3.6.1"
-recyclerview = "1.3.2"
+recyclerview = "1.4.0"
 material = "1.12.0"
 glide = "4.16.0"
 room = "2.6.1"
@@ -19,9 +19,28 @@ loggingInterceptor = "4.12.0"
 rxjava = "3.1.9"
 rxandroid = "3.0.2"
 adapterRxjava3 = "2.9.0"
-lifecycleReactivestreamsKtx = "2.8.4"
+lifecycleReactivestreamsKtx = "2.8.7"
+kotlinxCoroutines = "1.8.1"
+lifecycle = "2.8.7"
+koin = "4.0.0"
+activity = "1.10.0"
+androidDatabaseSqlcipher = "4.5.4"
+sqliteKtx = "2.4.0"
+lottie = "6.4.1"
+shimmer = "0.5.0"
+mapbox = "11.9.2"
 
 [libraries]
+mapbox-maps-android = { module = "com.mapbox.maps:android", version.ref = "mapbox" }
+shimmer = { module = "com.facebook.shimmer:shimmer", version.ref = "shimmer" }
+lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
+android-database-sqlcipher = { module = "net.zetetic:android-database-sqlcipher", version.ref = "androidDatabaseSqlcipher" }
+androidx-sqlite-ktx = { module = "androidx.sqlite:sqlite-ktx", version.ref = "sqliteKtx" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
 rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }
 rxandroid = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxandroid" }
 adapter-rxjava3 = { module = "com.squareup.retrofit2:adapter-rxjava3", version.ref = "adapterRxjava3" }
@@ -45,9 +64,12 @@ glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"}
+android-library = { id = "com.android.library", version.ref = "agp" }
+android-dynamic-feature = { id = "com.android.dynamic-feature", version.ref = "agp" }
 
