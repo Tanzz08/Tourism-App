@@ -12,6 +12,7 @@ android {
     defaultConfig {
         applicationId = "com.dicoding.tourismapp"
         minSdk = 24
+        //noinspection OldTargetApi
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -28,7 +29,7 @@ android {
             )
         }
         debug {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
@@ -84,4 +85,13 @@ dependencies {
 
     // koin
     implementation(libs.koin.android)
+
+    // lottie
+    implementation(libs.lottie)
+
+    // shimmer
+    implementation(libs.shimmer)
+
+    // mapbox
+    //implementation(libs.mapbox.maps.android)
 }

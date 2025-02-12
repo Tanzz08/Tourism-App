@@ -1,7 +1,7 @@
 [versions]
 agp = "8.5.2"
 kotlin = "2.0.0"
-ksp = "2.0.10-1.0.24"
+ksp = "2.0.20-1.0.24"
 coreKtx = "1.15.0"
 appcompat = "1.7.0"
 constraintLayout= "2.2.0"
@@ -26,8 +26,14 @@ koin = "4.0.0"
 activity = "1.10.0"
 androidDatabaseSqlcipher = "4.5.4"
 sqliteKtx = "2.4.0"
+lottie = "6.4.1"
+shimmer = "0.5.0"
+mapbox = "11.9.2"
 
 [libraries]
+mapbox-maps-android = { module = "com.mapbox.maps:android", version.ref = "mapbox" }
+shimmer = { module = "com.facebook.shimmer:shimmer", version.ref = "shimmer" }
+lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
 android-database-sqlcipher = { module = "net.zetetic:android-database-sqlcipher", version.ref = "androidDatabaseSqlcipher" }
 androidx-sqlite-ktx = { module = "androidx.sqlite:sqlite-ktx", version.ref = "sqliteKtx" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }

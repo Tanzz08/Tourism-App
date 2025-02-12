@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Tourism App</string>
     <string name="image_description">Image</string>
     <string name="text_primary">Sample of title text</string>
@@ -15,4 +15,6 @@
     <string name="no_data">Empty data</string>
     <string name="something_wrong">Oops.. something went wrong</string>
     <string name="title_maps">Maps</string>
+
+    <string name="mapbox_access_token" translatable="false" tools:ignore="UnusedResources">pk.YourPublicMapboxAccessToken</string>
 </resources>
